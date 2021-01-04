@@ -1,4 +1,4 @@
-# docker-ranger
+# ranger-docker
 
 Out of the box docker-compose for Apache Ranger. The current target version is Apache Ranger 2.1.0.
 
