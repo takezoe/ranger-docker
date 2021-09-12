@@ -15,4 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build ./ranger-admin --file Dockerfile --tag ranger-admin:$(date +%s)
+      run: |
+        cd ranger-admin
+        docker build . --file Dockerfile --tag ranger-admin:$(date +%s)
