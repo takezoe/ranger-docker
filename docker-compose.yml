@@ -3,10 +3,10 @@ version: '3.7'
 services:
 
   ranger-admin:
-    image: ranger-admin:1.0
-    build: 
-      context: ./ranger-admin
-      dockerfile: Dockerfile
+    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.1.0
+    # build:
+    #   context: ./ranger-admin
+    #   dockerfile: Dockerfile
     container_name: ranger-admin
     ports:
       - 6080:6080
