@@ -14,4 +14,4 @@ Then, you can access ranger-admin at http://localhost:6080 ans sign-in with admi
 
 ## How to build
 
-To publish new ranger-admin docker image to [GitHub Packages](https://github.com/takezoe/ranger-docker/pkgs/container/ranger-docker%2Franger-admin), create a git tag like `v1.0.0`. GitHub Actions build and publish a docker image automatically.
+To publish new ranger-admin docker image to [GitHub Packages](https://github.com/takezoe/ranger-docker/pkgs/container/ranger-docker%2Franger-admin), create a git tag like `v1.0.0`. GitHub Actions will build and publish a docker image automatically.
