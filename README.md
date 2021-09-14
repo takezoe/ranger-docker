@@ -1,4 +1,4 @@
-# ranger-docker
+# ranger-docker [![Docker](https://github.com/takezoe/ranger-docker/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/takezoe/ranger-docker/actions/workflows/docker-publish.yml)
 
 Out of the box docker-compose for Apache Ranger. The current target version is Apache Ranger 2.1.0.
 
