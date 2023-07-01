@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   ranger-admin:
-    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.1.0
+    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.4.0
     # build:
     #   context: ./ranger-admin
     #   dockerfile: Dockerfile
@@ -15,7 +15,7 @@ services:
       - ranger-solr
 
   ranger-mysql:
-    image: mysql:8.0.26
+    image: mysql:8.0.33
     container_name: ranger-mysql
     ports:
       - 3306:3306
@@ -28,7 +28,7 @@ services:
       MYSQL_DATABASE: ranger
 
   ranger-solr:
-    image: solr:8.9.0
+    image: solr:8.11.2
     container_name: ranger-solr
     ports:
       - 8983:8983

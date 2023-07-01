@@ -1,8 +1,8 @@
-FROM maven:3.6.2-jdk-8
+FROM maven:3.8.6-openjdk-8
 LABEL maintainer-twitter="@takezoen"
-LABEL version=2.1.0
+LABEL version=2.4.0
 
-ARG RANGER_VERSION=2.1.0
+ARG RANGER_VERSION=2.4.0
 
 ADD https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.26/mysql-connector-java-8.0.26.jar /opt
 
@@ -16,7 +16,7 @@ RUN apt-get -q update && apt-get install -y -q python gcc \
  && tar zxvf apache-ranger-${RANGER_VERSION}.tar.gz \
  && cd apache-ranger-${RANGER_VERSION} \
  && export MAVEN_OPTS="-Xmx2G" \
- && mvn package -DskipTests \
+ && mvn package -DskipTests -P ranger-admin \
  && cp target/ranger-${RANGER_VERSION}-admin.tar.gz /opt \
  && cd /opt \
  && tar zxvf ranger-${RANGER_VERSION}-admin.tar.gz \
