@@ -1,6 +1,7 @@
 services:
   ranger-solr:
     image: apache/ranger-solr:${RANGER_VERSION:-2.9.0}
+    container_name: ranger-solr
     command:
       - solr-precreate
       - ranger_audits
@@ -12,6 +13,7 @@ services:
 
   ranger-db:
     image: apache/ranger-db:${RANGER_VERSION:-2.9.0}
+    container_name: ranger-postgres
     environment:
       POSTGRES_PASSWORD: ${RANGER_DB_PASSWORD:-rangeradmin}
       RANGER_DB_USER: ${RANGER_DB_USER:-rangeradmin}
@@ -26,6 +28,7 @@ services:
 
   ranger-admin:
     image: apache/ranger:${RANGER_VERSION:-2.9.0}
+    container_name: ranger-admin
     depends_on:
       ranger-db:
         condition: service_healthy
