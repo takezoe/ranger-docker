@@ -1,28 +1,28 @@
-FROM maven:3.8.6-openjdk-8
+FROM maven:3.9.11-eclipse-temurin-8
 LABEL maintainer-twitter="@takezoen"
-LABEL version=2.4.0
+LABEL version=2.9.0
 
-ARG RANGER_VERSION=2.4.0
+ARG RANGER_VERSION=2.9.0
 
 ADD https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.26/mysql-connector-java-8.0.26.jar /opt
 
-ADD https://ftp.unicamp.br/pub/apache/ranger/${RANGER_VERSION}/apache-ranger-${RANGER_VERSION}.tar.gz /opt
+ADD https://downloads.apache.org/ranger/${RANGER_VERSION}/apache-ranger-${RANGER_VERSION}.tar.gz /opt
 
 COPY ranger-entrypoint.sh /opt
 
 WORKDIR /opt
 
-RUN apt-get -q update && apt-get install -y -q python gcc \
+RUN apt-get -q update && apt-get install -y -q python-is-python3 python3 gcc \
  && tar zxvf apache-ranger-${RANGER_VERSION}.tar.gz \
  && cd apache-ranger-${RANGER_VERSION} \
  && export MAVEN_OPTS="-Xmx2G" \
- && mvn package -DskipTests -P ranger-admin \
+ && mvn package -DskipTests -Denunciate.skip=true -P ranger-admin \
  && cp target/ranger-${RANGER_VERSION}-admin.tar.gz /opt \
  && cd /opt \
  && tar zxvf ranger-${RANGER_VERSION}-admin.tar.gz \
  && chmod +x /opt/ranger-entrypoint.sh
 
-ENV JAVA_HOME=/usr/local/openjdk-8
+ENV JAVA_HOME=/opt/java/openjdk
 ENV RANGER_HOME=/opt/ranger-${RANGER_VERSION}-admin
 
 COPY install.properties ${RANGER_HOME}

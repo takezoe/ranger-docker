@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   ranger-admin:
-    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.4.0
+    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.9.0
     # build:
     #   context: ./ranger-admin
     #   dockerfile: Dockerfile
