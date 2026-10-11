@@ -1,40 +1,43 @@
-version: '3.7'
-
 services:
-
-  ranger-admin:
-    image: ghcr.io/takezoe/ranger-docker/ranger-admin:v2.4.0
-    # build:
-    #   context: ./ranger-admin
-    #   dockerfile: Dockerfile
-    container_name: ranger-admin
-    ports:
-      - 6080:6080
-    depends_on:
-      - ranger-mysql
-      - ranger-solr
-
-  ranger-mysql:
-    image: mysql:8.0.33
-    container_name: ranger-mysql
-    ports:
-      - 3306:3306
-    volumes:
-      - ./ranger-mysql:/etc/mysql/conf.d
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: rangeradmin
-      MYSQL_PASSWORD: rangeradmin
-      MYSQL_DATABASE: ranger
-
   ranger-solr:
-    image: solr:8.11.2
-    container_name: ranger-solr
-    ports:
-      - 8983:8983
-    volumes:
-      - ./ranger-solr:/opt/solr/server/solr/configsets/ranger_audits/conf
-    entrypoint:
+    image: apache/ranger-solr:${RANGER_VERSION:-2.9.0}
+    command:
       - solr-precreate
       - ranger_audits
-      - /opt/solr/server/solr/configsets/ranger_audits
+      - /opt/solr/server/solr/configsets/ranger_audits/
+    ports:
+      - "${RANGER_SOLR_PORT:-8983}:8983"
+    volumes:
+      - ranger-solr-data:/var/solr
+
+  ranger-db:
+    image: apache/ranger-db:${RANGER_VERSION:-2.9.0}
+    environment:
+      POSTGRES_PASSWORD: ${RANGER_DB_PASSWORD:-rangeradmin}
+      RANGER_DB_USER: ${RANGER_DB_USER:-rangeradmin}
+      RANGER_DB_PASSWORD: ${RANGER_DB_PASSWORD:-rangeradmin}
+    healthcheck:
+      test: ["CMD-SHELL", "su -c 'pg_isready -q' postgres"]
+      interval: 10s
+      timeout: 2s
+      retries: 30
+    volumes:
+      - ranger-db-data:/var/lib/postgresql/data
+
+  ranger-admin:
+    image: apache/ranger:${RANGER_VERSION:-2.9.0}
+    depends_on:
+      ranger-db:
+        condition: service_healthy
+      ranger-solr:
+        condition: service_started
+    environment:
+      POSTGRES_PASSWORD: ${RANGER_DB_PASSWORD:-rangeradmin}
+      RANGER_DB_USER: ${RANGER_DB_USER:-rangeradmin}
+      RANGER_DB_PASSWORD: ${RANGER_DB_PASSWORD:-rangeradmin}
+    ports:
+      - "${RANGER_ADMIN_PORT:-6080}:6080"
+
+volumes:
+  ranger-db-data:
+  ranger-solr-data:
